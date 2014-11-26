@@ -7,7 +7,10 @@ class Pipe
 {
   private:
     int pinNumber;
-    double waterTime
+    double waterFreq
+    double waterLength
+    string tempPin;
+    string humPin;
   public:
     void setPinNumber(int i);
     int getPinNumber();
