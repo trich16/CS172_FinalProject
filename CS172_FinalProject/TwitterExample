@@ -1,0 +1,130 @@
+const int PWN = 3;
+const int AIN2 = 2;
+const int AIN1 = 4;
+//const int BPWN = 11;
+//const int BIN2 = 13;
+//const int BIN1 = 12;
+float Vopen = 3.0;
+int i = 0;
+int dutyCycle = 200;
+int dutyBrake = 23;
+int openTime = 2500;
+
+#include <SPI.h> // needed in Arduino 0019 or later
+#include <Ethernet.h>
+#include <Twitter.h>
+
+//Ethernet shield settings
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+
+// If you don't specify the IP address, DHCP is used(only in Arduino 1.0 or later).
+//byte ip[] = {192,168,0,6};
+
+// Your Token to Tweet (get it from http://arduino-tweet.appspot.com/)
+Twitter twitter("2474777953-EJumAYBQnq52rEftJRuq4DFZiYlj8rSKYTBDhJI");
+
+// Messages to post
+char msg1[140];
+char msg2[140];
+int count = 20;
+
+// The setup () function runs once, when the sketch starts 
+void setup () {
+  
+  Serial.begin(9600);
+  Ethernet.begin(mac);
+  
+  digitalWrite(AIN2, HIGH);
+  digitalWrite(AIN1, LOW);
+  analogWrite(PWN, dutyCycle);
+  delay(openTime);
+  digitalWrite(AIN2, HIGH);
+  digitalWrite(AIN1, LOW);
+  analogWrite(PWN, dutyBrake);
+  
+  
+}
+
+//The loop () function runs repeatedly, as long as the Arduino has power
+void loop() {
+   // read the input on analog pin 0:
+  int sensorValue = analogRead(A0);
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  float Vsponge = sensorValue * (5.0 / 1023.0);
+  // print out the value you read:
+  Serial.println(Vsponge);
+  
+  if (Vsponge <= Vopen)
+ {
+    if (i == 0)
+    {
+      //Lift the break
+      /*digitalWrite(BIN2, LOW);
+      digitalWrite(BIN1, HIGH);
+      analogWrite(BPWN, BreakDutyCycle);
+      delay(150);
+      */
+      digitalWrite(AIN2, 0);
+      digitalWrite(AIN1, 0);
+      analogWrite(PWN, 0);
+      delay(2000);
+      
+      sprintf(msg1, "It's raining! I just opened! test %d", count);
+      
+      Serial.println("connecting ...");
+      if (twitter.post(msg1)) {
+      // Specify &Serial to output received response to Serial.
+      // If no output is required, you can just omit the argument, e.g.
+      // int status = twitter.wait();
+      int status = twitter.wait(&Serial);
+      if (status == 200) {
+      Serial.println("OK.");
+        } else {
+      Serial.print("failed : code ");
+      Serial.println(status);
+        }
+      } else {
+    Serial.println("connection failed.");
+      
+      }
+      i = 1;
+      count = count + 1;
+    }
+ }
+ 
+ if (Vsponge > Vopen)
+ {
+   if (i == 1)
+   {
+      digitalWrite(AIN2, HIGH);
+      digitalWrite(AIN1, LOW);
+      analogWrite(PWN, dutyCycle);
+      delay(openTime);
+      digitalWrite(AIN2, HIGH);
+      digitalWrite(AIN1, LOW);
+      analogWrite(PWN, dutyBrake);
+      
+       sprintf(msg2, "It stopped raining.  I have closed. %d", count);
+      
+      Serial.println("connecting ...");
+      if (twitter.post(msg2)) {
+      // Specify &Serial to output received response to Serial.
+      // If no output is required, you can just omit the argument, e.g.
+      // int status = twitter.wait();
+      int status = twitter.wait(&Serial);
+      if (status == 200) {
+      Serial.println("OK.");
+        } else {
+      Serial.print("failed : code ");
+      Serial.println(status);
+        }
+      } else {
+    Serial.println("connection failed.");
+   }
+     i = 0;
+      count = count + 1;
+ }
+}
+}
+
+
