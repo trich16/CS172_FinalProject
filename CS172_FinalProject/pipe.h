@@ -1,6 +1,7 @@
 #ifndef PIPE_H
 #define PIPE_H
 
+
 class Pipe
 {
   private:
@@ -11,22 +12,24 @@ class Pipe
     long prevLength;
     int pumpSet;
     int tempPin;
-    int humPin;
+    char humPin;
   public:
-    void setPinNumber(int i);
+    Pipe pipe();
+    void setPinNumbers(int i, char j);
     int getPinNumber();
     void turnOn();
     void turnOff();
     void setWaterFreq(int i);
     int getWaterFreq();
     void setWaterLength(int i);
+    int getWaterLength();
     void checkFreq();
     void setPumpSet();
     int getPumpSet();
     void setTempPin(int i);
     int getTempPin();
     void setHumPin(int i);
-    int getHumPin();
+    char getHumPin();
     //need constructor
     void setPrevFreq(int i);
 };
