@@ -8,6 +8,8 @@ File dataFile;
 const int numberOfPipes = 3;
 int pumpPin = 5;
 int pumpStat = 0;
+int sensorFreq = 5000;
+int sensorLast = 0;
 //create three pipe objects 
 long int txtNumber[6];
 Pipe pipe[3];
@@ -29,9 +31,9 @@ void setup()
     Serial.println("initialization done.");
     
   //set arduino pin numbers for each pipe
-    pipe[0].setPinNumber(2);
-    pipe[1].setPinNumber(3);
-    pipe[2].setPinNumber(5);
+    pipe[0].setPinNumbers(2, A0);
+    pipe[1].setPinNumbers(3, A1);
+    pipe[2].setPinNumbers(5, A2);
     
     pipe[0].setWaterFreq(6000);
     pipe[1].setWaterFreq(6000);
@@ -109,5 +111,36 @@ void loop()
     }
     pumpStat = 0;
     //digitalWrite(pumpPin, LOW);
+  }
+  
+  sensorCheck();
+}
+
+void sensorCheck(){
+  
+ unsigned long _currentMillis = millis();
+  
+  if(_currentMillis - sensorLast > sensorFreq){
+    //save last time we collected data
+    sensorLast = _currentMillis;
+    int a;
+    
+      dataFile = SD.open("TOP_PIPE_SOIL_HUM.txt", FILE_WRITE);
+      a = analogRead(pipe[0].getHumPin());
+      dataFile.println(a);
+      Serial.println(a);
+      dataFile.close();
+    
+      dataFile = SD.open("midPipeSoilHum.txt", FILE_WRITE);
+      a = analogRead(pipe[1].getHumPin());
+      dataFile.println(a);
+      Serial.println(a);
+      dataFile.close();
+    
+      dataFile = SD.open("botPipeSoilHum.txt", FILE_WRITE);
+      a = analogRead(pipe[2].getHumPin());
+      dataFile.println(a);
+      Serial.println(a);
+      dataFile.close();
   }
 }
