@@ -34,22 +34,6 @@ void setup()
     pipe[0].setPinNumber(2);
     pipe[1].setPinNumber(3);
     pipe[2].setPinNumber(5);
-    
-    pipe[0].setWaterFreq(10000);
-    pipe[1].setWaterFreq(10000);
-    pipe[2].setWaterFreq(10000);
-    
-    pipe[0].setWaterLength(5000);
-    pipe[1].setWaterLength(5000);
-    pipe[2].setWaterLength(5000);
-    
-    pipe[0].setPrevFreq(0);
-    pipe[1].setPrevFreq(0);
-    pipe[2].setPrevFreq(0);
-    
-    pipe[0].setPumpSet();
-    pipe[1].setPumpSet();
-    pipe[2].setPumpSet();
   
   //initialize pins to output
   for (int i = 0; i < numberOfPipes; i++) 
@@ -57,27 +41,23 @@ void setup()
     
   
   
-  dataFile = SD.open("test.txt", FILE_READ);
+    dataFile = SD.open("test.txt", FILE_READ);
   if (SD.exists("test.txt")) {
-    Serial.print("Writing to test.txt...");
-    //dataFile = SD.open("hydroponics.txt", FILE_WRITE);
-    //dataFile.println("this is awesomely awesome!");
-    // close the file:
-    //dataFile.close();
-    //Serial.println("done.");
+    Serial.print("Opening test.txt...");
   } else {
     // if the file didn't open, print an error:
     Serial.println("error opening test.txt");
   }
   
-  //make a read function to return the numbers we need
+  //make a read function to return numbers from the text file
   if (SD.exists("test.txt")){
-     Serial.print("Success!");
-     
+     Serial.println("Succeeded in opening test.txt");
   for(int i = 0; i < 6; i++){
-     char c = dataFile.read(); 
-     txtNumber[i] = c; 
-     Serial.print(txtNumber[i]);
+     char c = dataFile.read();
+     int a;
+     a=c-'0';
+     txtNumber[i] = a;
+     Serial.println(txtNumber[i]); //output the variable on the screen to verify
     }
    }
   else
@@ -85,7 +65,7 @@ void setup()
     Serial.println ("couldn't read file");
   }
   dataFile.close();
-  
+
   for(int i = 0; i < 3; i++){
     pipe[i].setWaterFreq(txtNumber[i+i]);
     pipe[i].setWaterLength(txtNumber[i+i+1]); 
