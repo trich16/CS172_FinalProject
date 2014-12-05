@@ -1,10 +1,14 @@
 #include "pipe.h"
 #include "Arduino.h"
 
-
 void Pipe::setWaterFreq(int i)
 {
   waterFreq = i;
+}
+
+int Pipe::getWaterFreq()
+{
+  return waterFreq;
 }
 
 void Pipe::setWaterLength(int i)
@@ -12,9 +16,15 @@ void Pipe::setWaterLength(int i)
   waterLength = i;
 }
 
-void Pipe::setPinNumber(int i)
+int Pipe::getWaterLength()
+{
+  return waterLength;
+}
+
+void Pipe::setPinNumbers(int i, char j)
 {
   pinNumber = i;
+  humPin = j;
 }
 
 int Pipe::getPinNumber()
@@ -37,7 +47,7 @@ void Pipe::setHumPin(int i)
   humPin = i;
 }
 
-int Pipe::getHumPin()
+char Pipe::getHumPin()
 {
   return humPin;
 }
@@ -87,7 +97,6 @@ int Pipe::getPumpSet()
   return pumpSet;
 }
 
-//need constructor
 void Pipe::setPrevFreq(int i)
 {
   prevFreq = i;
@@ -98,6 +107,11 @@ void Pipe::setPumpSet()
   pumpSet = 0;
 }
 
+Pipe Pipe::pipe()
+{
+ pumpSet = 0;
+ prevFreq = 0;
+}
 
     
     
