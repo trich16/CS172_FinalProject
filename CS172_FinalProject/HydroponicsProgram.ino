@@ -75,11 +75,8 @@ void setup()
   dataFile.close();
 
   for(int i = 0; i < 3; i++){
-    int f = txtNumber[i+i];
-    int l = txtNumber[i+i+1];
-    pipe[i].setWaterFreq(f);
-    pipe[i].setWaterLength(l);
-    Serial.println(pipe[i].getWaterLength()); 
+    pipe[i].setWaterFreq(txtNumber[i+i]);
+    pipe[i].setWaterLength(txtNumber[i+i+1]);
   }
 
   
