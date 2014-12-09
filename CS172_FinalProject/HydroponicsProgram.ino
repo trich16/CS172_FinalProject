@@ -1,19 +1,15 @@
 
 #include <SD.h>
-//#include <Ethernet.h>
-//#include "Twitter.h"
 #include "pipe.h"
-//#include "waterTime.txt"
 File dataFile;
 const int numberOfPipes = 3;
 int pumpPin = 5;
 int pumpStat = 0;
 int sensorFreq = 5000;
-int sensorLast = 0;
+long int sensorLast = 0;
 //create three pipe objects 
 long int txtNumber[6];
 Pipe pipe[3];
-//DEFAULT CONSTRUCTOR
 
 
 void setup()
@@ -122,22 +118,38 @@ void sensorCheck(){
     sensorLast = _currentMillis;
     int a;
     
-      dataFile = SD.open("TOP_PIPE_SOIL_HUM.txt", FILE_WRITE);
-      a = analogRead(pipe[0].getHumPin());
-      dataFile.println(a);
-      Serial.println(a);
-      dataFile.close();
+      dataFile = SD.open("0hum.txt", FILE_WRITE);
+      if (dataFile) {
+        a = analogRead(pipe[0].getHumPin());
+        dataFile.println(a);
+        Serial.println(a);
+        dataFile.close();
+      }
+      else{
+        Serial.println("error opening 0hum.txt.");
+      }
     
-      dataFile = SD.open("midPipeSoilHum.txt", FILE_WRITE);
-      a = analogRead(pipe[1].getHumPin());
-      dataFile.println(a);
-      Serial.println(a);
-      dataFile.close();
-    
-      dataFile = SD.open("botPipeSoilHum.txt", FILE_WRITE);
+      dataFile = SD.open("1hum.txt", FILE_WRITE);
+      if (dataFile) {
+        a = analogRead(pipe[1].getHumPin());
+        dataFile.println(a);
+        Serial.println(a);
+        dataFile.close();
+      }
+      else{
+        Serial.println("error opening 1hum.txt.");
+      }
+      
+      
+      dataFile = SD.open("2hum.txt", FILE_WRITE);
+      if (dataFile){
       a = analogRead(pipe[2].getHumPin());
       dataFile.println(a);
       Serial.println(a);
       dataFile.close();
+      }
+      else{
+        Serial.println("error opening 3hum.txt.");
+      }
   }
 }
