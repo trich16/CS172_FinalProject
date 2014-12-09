@@ -1,4 +1,3 @@
-
 #include <SD.h>
 #include "pipe.h"
 File dataFile;
@@ -32,22 +31,12 @@ void setup()
     pipe[0].setPinNumbers(2, A0);
     pipe[1].setPinNumbers(3, A1);
     pipe[2].setPinNumbers(5, A2);
-    
-    pipe[0].setWaterFreq(6000);
-    pipe[1].setWaterFreq(6000);
-    pipe[2].setWaterFreq(6000);
-    
-    pipe[0].setWaterLength(5000);
-    pipe[1].setWaterLength(5000);
-    pipe[2].setWaterLength(5000);
-    
+
   //initialize pins to output
   for (int i = 0; i < numberOfPipes; i++) 
     pinMode(pipe[i].getPinNumber(), OUTPUT);
     
-  
-  
-  
+  //Open the text file containing input data from the sd card
   dataFile = SD.open("test.txt", FILE_READ);
   if (SD.exists("test.txt")) {
     Serial.print("Opening test.txt...");
@@ -56,13 +45,14 @@ void setup()
     Serial.println("error opening test.txt");
   }
   
+  //take char inputs from the txt file, turn them into ints, and store them in an array.
     if (SD.exists("test.txt")){
      Serial.println("Succeeded in opening test.txt");
   for(int i = 0; i < 6; i++){
      char c = dataFile.read();
      long int a;
      a=c-'0';
-     txtNumber[i] = a *1000;
+     txtNumber[i] = a *60000; // multiply by 60000 to change the values from milliseconds to minutes
      Serial.println(txtNumber[i]); //output the variable on the screen to verify
     }
    }
@@ -72,9 +62,10 @@ void setup()
   }
   dataFile.close();
 
+  // set the frequency and and length of the water times from the txtNumber array
   for(int i = 0; i < 3; i++){
-    pipe[i].setWaterFreq(txtNumber[i+i]);
-    pipe[i].setWaterLength(txtNumber[i+i+1]);
+    pipe[i].setWaterFreq(txtNumber[i+i]);          
+    pipe[i].setWaterLength(txtNumber[i+i+1]);      
   }
 
   
