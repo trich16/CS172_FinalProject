@@ -5,6 +5,8 @@ File dataFile;
 const int numberOfPipes = 3;
 int pumpPin = 5;
 int pumpStat = 0;
+
+//how often you want the program to read sensors in milliseconds 
 int sensorFreq = 5000;
 long int sensorLast = 0;
 //create three pipe objects 
@@ -106,20 +108,26 @@ void loop()
     //digitalWrite(pumpPin, LOW);
   }
   
+  //calls sensorCheck function 
   sensorCheck();
 }
 
+
+//function checks if it is time to read sensors and print values to files
 void sensorCheck(){
-  
+  //millis() continuously checks the time since the program began running
  unsigned long _currentMillis = millis();
-  
+ 
+  //if statement evaluates whether the correct time between sensor reads has elapsed
   if(_currentMillis - sensorLast > sensorFreq){
     //save last time we collected data
     sensorLast = _currentMillis;
     int a;
     
+    //opens bottom pipe humidity data file to write
       dataFile = SD.open("0hum.txt", FILE_WRITE);
       if (dataFile) {
+      //reads the current sensor voltage and prints to the file
         a = analogRead(pipe[0].getHumPin());
         dataFile.println(a);
         Serial.println(a);
@@ -129,8 +137,10 @@ void sensorCheck(){
         Serial.println("error opening 0hum.txt.");
       }
     
+    //opens middle pipe humidity data file to write
       dataFile = SD.open("1hum.txt", FILE_WRITE);
       if (dataFile) {
+      //reads current sensor voltage and prints to file
         a = analogRead(pipe[1].getHumPin());
         dataFile.println(a);
         Serial.println(a);
@@ -140,13 +150,14 @@ void sensorCheck(){
         Serial.println("error opening 1hum.txt.");
       }
       
-      
+      //opens top pipe humidity data file to write
       dataFile = SD.open("2hum.txt", FILE_WRITE);
       if (dataFile){
-      a = analogRead(pipe[2].getHumPin());
-      dataFile.println(a);
-      Serial.println(a);
-      dataFile.close();
+      //reads current sensor voltage and prints to file
+        a = analogRead(pipe[2].getHumPin());
+        dataFile.println(a);
+        Serial.println(a);
+        dataFile.close();
       }
       else{
         Serial.println("error opening 3hum.txt.");
