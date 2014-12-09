@@ -21,6 +21,7 @@ int Pipe::getWaterLength()
   return waterLength;
 }
 
+//hum pin is an analog pin which must be a char
 void Pipe::setPinNumbers(int i, char j)
 {
   pinNumber = i;
@@ -65,11 +66,13 @@ void Pipe::turnOff()
 void Pipe::checkFreq()
 {
   unsigned long currentMillis = millis();
-  
+  //if statement evaluates whether the right amount of time has passed to water.
   if(currentMillis - prevFreq > waterFreq){
     //save last time we watered
     prevFreq = currentMillis;
     //turn on watering
+    //pumpset variable allows us to only call this if statement once before the other if statement must be called
+    //making it so it will only print once, not continuously.
     if (pumpSet == 0){
        Serial.print(pinNumber); 
        Serial.print(" Turned On at: ");
@@ -80,6 +83,8 @@ void Pipe::checkFreq()
     turnOn();
     }
   
+  //if statement evaluates if the right watering length has elapsed yet.
+  //if it has, this code will turn off the watering.
   if(currentMillis - prevFreq > waterLength){
     if(pumpSet == 1){
       Serial.print(pinNumber);
@@ -102,6 +107,7 @@ void Pipe::setPumpSet()
   pumpSet = 0;
 }
 
+//pipe class constructor
 Pipe Pipe::pipe()
 {
  pumpSet = 0;
