@@ -30,8 +30,6 @@ class Pipe
     int getTempPin();
     void setHumPin(int i);
     char getHumPin();
-    //need constructor
-    void setPrevFreq(int i);
 };
 
 #endif
