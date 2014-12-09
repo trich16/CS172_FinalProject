@@ -97,11 +97,6 @@ int Pipe::getPumpSet()
   return pumpSet;
 }
 
-void Pipe::setPrevFreq(int i)
-{
-  prevFreq = i;
-}
-
 void Pipe::setPumpSet()
 {
   pumpSet = 0;
