@@ -24,8 +24,8 @@ int Pipe::getWaterLength()
 //hum pin is an analog pin which must be a char
 void Pipe::setPinNumbers(int i, char j)
 {
-  pinNumber = i;
-  humPin = j;
+  pinNumber = i; //set the pin number for output on the microcontroller
+  humPin = j;    //set the pin number for input of the humidity sensor data
 }
 
 int Pipe::getPinNumber()
@@ -55,12 +55,12 @@ char Pipe::getHumPin()
 
 void Pipe::turnOn()
 {
-  digitalWrite(pinNumber, HIGH);
+  digitalWrite(pinNumber, HIGH); //set the voltage output to 5 to turn on the flow of water
 }
 
 void Pipe::turnOff()
 {
-  digitalWrite(pinNumber, LOW);
+  digitalWrite(pinNumber, LOW); //set the voltage output to 0 to turn off the flow of water
 }
 
 void Pipe::checkFreq()
