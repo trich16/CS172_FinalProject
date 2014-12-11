@@ -76,7 +76,6 @@ void loop()
   //loop checks whether it is time to water or not. If it is, it waters for the correct length.
   for (int i=0; i < numberOfPipes; i++){
     pipe[i].checkFreq();
-   // Serial.println(pipe[i].getWaterFreq());
   }
   
   // checks to see if any pipes needs the pump to be on and turns the pump on or off accordingly
@@ -106,6 +105,7 @@ void loop()
 
 //function checks if it is time to read sensors and print values to files
 void sensorCheck(){
+
   //millis() continuously checks the time since the program began running
  unsigned long _currentMillis = millis();
  
@@ -116,7 +116,7 @@ void sensorCheck(){
     int a;
     
     //opens bottom pipe humidity data file to write
-      dataFile = SD.open("0hum.txt", FILE_WRITE);
+      dataFile = SD.open("tophum.txt", FILE_WRITE);
       if (dataFile) {
       //reads the current sensor voltage and prints to the file
         a = analogRead(pipe[0].getHumPin());
@@ -129,7 +129,7 @@ void sensorCheck(){
       }
     
     //opens middle pipe humidity data file to write
-      dataFile = SD.open("1hum.txt", FILE_WRITE);
+      dataFile = SD.open("midhum.txt", FILE_WRITE);
       if (dataFile) {
       //reads current sensor voltage and prints to file
         a = analogRead(pipe[1].getHumPin());
@@ -142,7 +142,7 @@ void sensorCheck(){
       }
       
       //opens top pipe humidity data file to write
-      dataFile = SD.open("2hum.txt", FILE_WRITE);
+      dataFile = SD.open("bothum.txt", FILE_WRITE);
       if (dataFile){
       //reads current sensor voltage and prints to file
         a = analogRead(pipe[2].getHumPin());
