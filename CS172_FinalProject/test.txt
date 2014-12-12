@@ -1,0 +1,18 @@
+523221
+
+This file will allow you to manage the Kipos hydroponics system.
+Firstly change the numbers within the [ ] for clarity.
+Next change the numbers above, which are in the same order as the numbers within the [ ].
+The only portions of this file that should be changed are the numbers in the [  ] and above.
+Do not leave any spaces between the numbers above.
+The frequencies and durations are set to be in minutes.
+
+The top row of pipes:
+water every [5] minutes
+watering for [2] minutes
+The middle row of pipes:
+water every [3] minutes
+watering for [2] minutes
+The bottom row of pipes:
+water every [2] minutes
+watering for [1] minutes
